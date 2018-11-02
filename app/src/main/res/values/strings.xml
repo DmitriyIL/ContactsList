@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Contacts List</string>
+    <string name="name">Name: %s</string>
+    <string name="email">E-mail: %s</string>
+    <string name="state">state</string>
+    <string name="YO">%d y.o.</string>
+    <string name="phone">Phone: %s</string>
+    <string name="company">Company: %s</string>
+    <string name="eyeColor">Eye color:</string>
+    <string name="favoriteFruit">Favorite fruit:</string>
+    <string name="location">Location: %f, %f</string>
+    <string name="registered">Registered at %s</string>
+    <string name="about">About: %s</string>
+    <string name="friends">Friends :</string>
+
+
+</resources>
