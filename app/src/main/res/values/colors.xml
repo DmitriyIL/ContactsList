@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#3b69ff</color>
+    <color name="colorPrimaryDark">#717171</color>
+    <color name="colorAccent">#ff3b3e</color>
 
     <color name="black">#000000</color>
-    <color name="gray_dove_light">#666666</color>
+    <color name="white">#FFFFFE</color>
+    <color name="gray_dove_light">#969595</color>
 
     <color name="brownEye">#a35501</color>
     <color name="blueEye">#02ddf4</color>
     <color name="greenEye">#3ece25</color>
 
-    <color name="activeUser">#46f25a</color>
-    <color name="inactiveUser">#f14657</color>
+    <color name="activeUser">#1fb91b</color>
+    <color name="inactiveUser">#b7b7b7</color>
+
+    <color name="separatorBar">#d7d7d7</color>
+
+    <color name="linkColor">#3af</color>
+
+    <color name="recyclerViewBack">#e7e7e7</color>
 </resources>

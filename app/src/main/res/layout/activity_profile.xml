@@ -35,16 +35,28 @@
 
             <TextView
                 android:id="@+id/emailText"
-                style="@style/ProfileField"
-                android:layout_width="wrap_content"
+                style="@style/FirstFieldInLine"
+                android:background="@drawable/ripple"
                 android:layout_below="@id/yoText"
                 android:text="@string/email" />
 
             <TextView
+                android:id="@+id/emailClickable"
+                style="@style/SecondFieldInLine"
+                android:layout_toEndOf="@id/emailText"
+                android:layout_below="@id/yoText"/>
+
+            <TextView
                 android:id="@+id/phoneText"
-                style="@style/ProfileField"
+                style="@style/FirstFieldInLine"
                 android:layout_below="@id/emailText"
                 android:text="@string/phone" />
+
+            <TextView
+                android:id="@+id/phoneClickable"
+                style="@style/SecondFieldInLine"
+                android:layout_toEndOf="@id/phoneText"
+                android:layout_below="@id/emailText"/>
 
             <TextView
                 android:id="@+id/companyText"
@@ -67,7 +79,7 @@
                     android:id="@+id/eyeColorImage"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/text_start_margin"
                     android:layout_toEndOf="@id/eyeColorText"
                     android:background="@drawable/shape_oval" />
@@ -88,7 +100,7 @@
                     android:id="@+id/favoriteFruitImage"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/text_start_margin"
                     android:layout_toEndOf="@id/favoriteFruitText"
                     android:background="@drawable/apple" />
@@ -96,9 +108,16 @@
 
             <TextView
                 android:id="@+id/locationText"
-                style="@style/ProfileField"
+                style="@style/FirstFieldInLine"
                 android:layout_below="@id/favoriteFruitLayout"
                 android:text="@string/location" />
+
+            <TextView
+                android:id="@+id/locationClickable"
+                style="@style/SecondFieldInLine"
+                android:layout_below="@id/favoriteFruitLayout"
+                android:layout_toEndOf="@id/locationText"
+                />
 
             <TextView
                 android:id="@+id/registeredText"
@@ -122,11 +141,12 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/usersRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="220dp"
                 android:layout_below="@id/friendsText"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
                 android:scrollbars="vertical" />
         </RelativeLayout>
 

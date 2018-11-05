@@ -1,8 +1,11 @@
 package com.lashchenov.contactsListApp.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -64,24 +67,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void initRecyclerView() {
+    private void initRecyclerView() {
+        final Context context = getBaseContext();
+
         usersView = findViewById(R.id.usersRecyclerView);
-        usersView.setLayoutManager(new LinearLayoutManager(this));
+        usersView.setLayoutManager(new LinearLayoutManager(context));
+
+        DividerItemDecoration itemDecor =
+                new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        itemDecor.setDrawable(ContextCompat.getDrawable(context, R.drawable.separator));
+        usersView.addItemDecoration(itemDecor);
 
         UsersAdapter.OnUserClickListener onUserClickListener = new UsersAdapter.OnUserClickListener() {
             @Override
             public void onUserClick(User user) {
                 if (user.getActive()) {
-                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(context, ProfileActivity.class);
                     intent.putExtra(ProfileActivity.USER_ID, user);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(MainActivity.this, user.getName() + " is inactive",
+                    Toast.makeText(context, user.getName() + " is inactive",
                             Toast.LENGTH_SHORT).show();
                 }
             }
         };
-        usersAdapter = new UsersAdapter(onUserClickListener, getBaseContext());
+        usersAdapter = new UsersAdapter(onUserClickListener, context);
         usersView.setAdapter(usersAdapter);
     }
 
