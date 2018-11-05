@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class User implements Serializable {
 
-    private long id;
+    private int id;
     private String name, email, company, phone;
-    private Boolean state;
+    private Boolean active;
     private int age;
     private EyeColor eyeColor;
     private FavoriteFruit favoriteFruit;
@@ -32,7 +32,7 @@ public class User implements Serializable {
         return email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -48,8 +48,8 @@ public class User implements Serializable {
         return phone;
     }
 
-    public Boolean getState() {
-        return state;
+    public Boolean getActive() {
+        return active;
     }
 
     public Double getLatitude() {
@@ -77,7 +77,7 @@ public class User implements Serializable {
     }
 
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -97,8 +97,8 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public void setState(Boolean state) {
-        this.state = state;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void setAge(int age) {
@@ -145,7 +145,7 @@ public class User implements Serializable {
                 Objects.equals(email, user.email) &&
                 Objects.equals(company, user.company) &&
                 Objects.equals(phone, user.phone) &&
-                Objects.equals(state, user.state) &&
+                Objects.equals(active, user.active) &&
                 eyeColor == user.eyeColor &&
                 favoriteFruit == user.favoriteFruit &&
                 Objects.equals(latitude, user.latitude) &&
@@ -157,42 +157,6 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("");
-        sb.append(id);
-        sb.append("\n");
-        sb.append(name);
-        sb.append("\n");
-        sb.append(age);
-        sb.append("\n");
-        sb.append(email);
-        sb.append("\n");
-        sb.append(phone);
-        sb.append("\n");
-        sb.append(company);
-        sb.append("\n");
-        sb.append(eyeColor);
-        sb.append("\n");
-        sb.append(favoriteFruit);
-        sb.append("\n");
-        sb.append(latitude).append(", ").append(longitude);
-        sb.append("\n");
-        sb.append(registered);
-        sb.append("\n");
-        sb.append("About: ").append(about);
-        sb.append("\n");
-        sb.append("Friends: ");
-
-        for (User friend: friends) {
-            sb.append(friend.getId()).append(", ");
-        }
-
-        return sb.toString();
     }
 }

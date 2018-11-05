@@ -1,7 +1,9 @@
-package com.lashchenov.contactsListApp.jsonParse;
+package com.lashchenov.contactsListApp.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,22 +13,26 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.lashchenov.contactsListApp.R;
+import com.lashchenov.contactsListApp.activity.MainActivity;
+import com.lashchenov.contactsListApp.adapter.UsersAdapter;
+import com.lashchenov.contactsListApp.data.Data;
+import com.lashchenov.contactsListApp.data.DataSQLiteImpl;
 import com.lashchenov.contactsListApp.pojo.EyeColor;
 import com.lashchenov.contactsListApp.pojo.FavoriteFruit;
 import com.lashchenov.contactsListApp.pojo.RegisteredTime;
 import com.lashchenov.contactsListApp.pojo.User;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +40,24 @@ import java.util.Map;
 public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
 
     private WeakReference<Context> context;
+    private Data data;
+    private UsersAdapter usersAdapter;
+    private WeakReference<View> progressBarView;
 
-    public JsonParserTask(Context context) {
-        this.context = new WeakReference<>(context);
+    //only Main Activity can call that task
+    public JsonParserTask(MainActivity activity) {
+        this.context = new WeakReference<>(activity.getBaseContext());
+        data = new DataSQLiteImpl(context.get());
+        usersAdapter = activity.getUsersAdapter();
+        progressBarView = new WeakReference<>(activity.findViewById(R.id.progressBar));
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressBarView.get().setVisibility(View.VISIBLE);
+        usersAdapter.clearItems();
+    }
 
     @Override
     protected List<User> doInBackground(Void... params) {
@@ -73,24 +92,25 @@ public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
 
     private List<User> parseJsonToUsersList(String strJson) {
         Gson g = new GsonBuilder().registerTypeAdapter(User.class, new UserDeserializer()).create();
-        Type itemsListType = new TypeToken<List<User>>() {}.getType();
+        Type itemsListType = new TypeToken<List<User>>() {
+        }.getType();
         List<User> users = g.fromJson(strJson, itemsListType);
         return users;
     }
 
 
     private static class UserDeserializer implements JsonDeserializer<User> {
-        private final Map<Integer, User> cache = new HashMap<>();
+        private final Map<Integer, User> UserCache = new HashMap<>();
 
         @Override
         public User deserialize(JsonElement jElem, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             final JsonObject jsonObject = jElem.getAsJsonObject();
 
-            final User user = getOrCreate(jsonObject.get("id").getAsInt());
+            User user = getOrCreateUser(jsonObject.get("id").getAsInt());
 
             if (jsonObject.get("isActive") != null) {
-                user.setState(jsonObject.get("isActive").getAsBoolean());
+                user.setActive(jsonObject.get("isActive").getAsBoolean());
                 user.setName(jsonObject.get("name").getAsString());
                 user.setEmail(jsonObject.get("email").getAsString());
                 user.setAge(jsonObject.get("age").getAsInt());
@@ -117,12 +137,12 @@ public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
         }
 
 
-        private User getOrCreate(final int id) {
-            User user = cache.get(id);
+        private User getOrCreateUser(final int id) {
+            User user = UserCache.get(id);
             if (user == null) {
                 user = new User();
                 user.setId(id);
-                cache.put(id, user);
+                UserCache.put(id, user);
             }
             return user;
         }
@@ -132,20 +152,16 @@ public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
     @Override
     protected void onPostExecute(List<User> users) {
         super.onPostExecute(users);
-        //TODO сохранение в SQL;
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+        progressBarView.get().setVisibility(View.INVISIBLE);
+        Toast.makeText(context.get(), "Done", Toast.LENGTH_SHORT).show();
+        usersAdapter.setItems(users);
+        data.setUsers(users);
     }
-
-
-    /*private void writeFile(String fileContent) {
-        try {
-            String fileName = "users.json";
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                    context.get().openFileOutput(fileName, context.get().MODE_PRIVATE)));
-            bw.write(fileContent);
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 }
 

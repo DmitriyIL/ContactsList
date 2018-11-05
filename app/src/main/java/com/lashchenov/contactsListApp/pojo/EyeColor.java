@@ -1,31 +1,28 @@
 package com.lashchenov.contactsListApp.pojo;
 
-import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import com.lashchenov.contactsListApp.R;
 
 public enum EyeColor {
 
-    BROWN {
-        @Override
-        public int getId(Context context) {
-            return ContextCompat.getColor(context, R.color.brownEye);
-        }
-    },
-    GREEN {
-        @Override
-        public int getId(Context context) {
-            return ContextCompat.getColor(context, R.color.greenEye);
-        }
-    },
-    BLUE {
-        @Override
-        public int getId(Context context) {
-            return ContextCompat.getColor(context, R.color.blueEye);
-        }
-    };
+    BROWN(R.color.brownEye, 0),
+    GREEN(R.color.greenEye, 1),
+    BLUE(R.color.blueEye, 2);
 
-    public abstract int getId(Context context);
+    private final int drawableId;
+    private final int id;
+
+    EyeColor(int drawableId, int id) {
+        this.drawableId = drawableId;
+        this.id = id;
+    }
+
+    public int getDrawableId() {
+        return drawableId;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public static EyeColor parseColor(String str) {
         switch (str) {

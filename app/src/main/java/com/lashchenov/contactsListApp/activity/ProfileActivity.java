@@ -5,13 +5,21 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.lashchenov.contactsListApp.R;
 import com.lashchenov.contactsListApp.adapter.UsersAdapter;
+import com.lashchenov.contactsListApp.pojo.EyeColor;
 import com.lashchenov.contactsListApp.pojo.User;
 
 import java.util.Collection;
@@ -21,6 +29,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String USER_ID = "userId";
 
     private ScrollView scrollView;
+    private Toolbar toolbar;
+    private UsersAdapter friendsAdapter;
 
     private TextView nameTextView;
     private TextView ageTextView;
@@ -34,40 +44,35 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView favoriteFruitImageView;
     private RecyclerView friendsRecyclerView;
 
-    private UsersAdapter friendsAdapter;
-
     private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        scrollView = findViewById(R.id.profileScrollView);
-        scrollView.smoothScrollTo(0, 0);
-
-        nameTextView = findViewById(R.id.nameText);
-        ageTextView = findViewById(R.id.yoText);
-        emailTextView = findViewById(R.id.emailText);
-        phoneTextView = findViewById(R.id.phoneText);
-        companyTextView = findViewById(R.id.companyText);
-        locationTextView = findViewById(R.id.locationText);
-        registeredTextView = findViewById(R.id.registeredText);
-        aboutTextView = findViewById(R.id.aboutText);
-        eyeColorImageView = findViewById(R.id.eyeColorImage);
-        favoriteFruitImageView = findViewById(R.id.favoriteFruitImage);
-
-        initFriendsRecyclerView();
+        initToolbar();
+        initViewComponents();
 
         emailTextView.setOnClickListener(this);
         phoneTextView.setOnClickListener(this);
         locationTextView.setOnClickListener(this);
 
         user = (User) getIntent().getExtras().getSerializable(USER_ID);
-        loadFriends(user);
-
         displayProfileInfo(user);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -92,14 +97,41 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.profile_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    private void initViewComponents() {
+        scrollView = findViewById(R.id.profileScrollView);
+        scrollView.smoothScrollTo(0, 0);
+
+        nameTextView = findViewById(R.id.nameText);
+        ageTextView = findViewById(R.id.yoText);
+        emailTextView = findViewById(R.id.emailText);
+        phoneTextView = findViewById(R.id.phoneText);
+        companyTextView = findViewById(R.id.companyText);
+        locationTextView = findViewById(R.id.locationText);
+        registeredTextView = findViewById(R.id.registeredText);
+        aboutTextView = findViewById(R.id.aboutText);
+        eyeColorImageView = findViewById(R.id.eyeColorImage);
+        favoriteFruitImageView = findViewById(R.id.favoriteFruitImage);
+
+        initFriendsRecyclerView();
+    }
+
+
     private void initFriendsRecyclerView() {
-        friendsRecyclerView = findViewById(R.id.recyclerView);
+        friendsRecyclerView = findViewById(R.id.usersRecyclerView);
         friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         UsersAdapter.OnUserClickListener onUserClickListener = new UsersAdapter.OnUserClickListener() {
             @Override
             public void onUserClick(User user) {
-                if (user.getState()) {
+                if (user.getActive()) {
                     Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
                     intent.putExtra(ProfileActivity.USER_ID, user);
                     startActivity(intent);
@@ -114,10 +146,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private void loadFriends(User user) {
+    private void fillFriendsView(User user) {
         Collection<User> friends = user.getFriends();
         friendsAdapter.setItems(friends);
-
     }
 
 
@@ -135,11 +166,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         Drawable background = eyeColorImageView.getBackground();
         if (background instanceof GradientDrawable) {
-            int colorId = user.getEyeColor().getId(getBaseContext());
-            ((GradientDrawable) background).setColor(colorId);
+            EyeColor eyeColor = user.getEyeColor();
+            int drawableId = ContextCompat.getColor(this, eyeColor.getDrawableId());
+            ((GradientDrawable) background).setColor(drawableId);
         }
 
-        int fruitId = user.getFavoriteFruit().getFruitId();
+        int fruitId = user.getFavoriteFruit().getDrawableId();
         favoriteFruitImageView.setBackgroundResource(fruitId);
+
+        fillFriendsView(user);
     }
 }

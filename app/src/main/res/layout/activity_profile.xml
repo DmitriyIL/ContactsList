@@ -1,124 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profileScrollView"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/profile_toolbar"
+        style="@style/Toolbar">
+    </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/profileScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <TextView
+            <TextView
                 android:id="@+id/nameText"
                 style="@style/HeaderProfileField"
-                android:textStyle="bold"
                 android:layout_alignParentTop="true"
-                android:text="Jhon Pupkin"/>
+                android:text="Jhon Pupkin"
+                android:textStyle="bold" />
 
 
-        <TextView
+            <TextView
                 android:id="@+id/yoText"
                 style="@style/ProfileField"
                 android:layout_below="@id/nameText"
-                android:text="@string/YO"/>
+                android:text="@string/YO" />
 
-        <TextView
+            <TextView
                 android:id="@+id/emailText"
                 style="@style/ProfileField"
                 android:layout_width="wrap_content"
                 android:layout_below="@id/yoText"
-                android:text="@string/email"/>
+                android:text="@string/email" />
 
-        <TextView
+            <TextView
                 android:id="@+id/phoneText"
                 style="@style/ProfileField"
                 android:layout_below="@id/emailText"
-                android:text="@string/phone"/>
+                android:text="@string/phone" />
 
-        <TextView
+            <TextView
                 android:id="@+id/companyText"
                 style="@style/ProfileField"
                 android:layout_below="@id/phoneText"
-                android:text="@string/company"/>
+                android:text="@string/company" />
 
-        <RelativeLayout
+            <RelativeLayout
                 android:id="@+id/eyeColorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/companyText">
 
-            <TextView
+                <TextView
                     android:id="@+id/eyeColorText"
                     style="@style/ProfileField"
-                    android:text="@string/eyeColor"/>
+                    android:text="@string/eyeColor" />
 
-            <ImageView
+                <ImageView
                     android:id="@+id/eyeColorImage"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_toEndOf="@id/eyeColorText"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/text_start_margin"
-                    android:background="@drawable/shape_oval"/>
-        </RelativeLayout>
+                    android:layout_toEndOf="@id/eyeColorText"
+                    android:background="@drawable/shape_oval" />
+            </RelativeLayout>
 
-        <RelativeLayout
+            <RelativeLayout
                 android:id="@+id/favoriteFruitLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/eyeColorLayout">
 
-            <TextView
+                <TextView
                     android:id="@+id/favoriteFruitText"
                     style="@style/ProfileField"
-                    android:text="@string/favoriteFruit"/>
+                    android:text="@string/favoriteFruit" />
 
-            <ImageView
+                <ImageView
                     android:id="@+id/favoriteFruitImage"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:layout_toEndOf="@id/favoriteFruitText"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/text_start_margin"
-                    android:background="@drawable/apple"/>
-        </RelativeLayout>
+                    android:layout_toEndOf="@id/favoriteFruitText"
+                    android:background="@drawable/apple" />
+            </RelativeLayout>
 
-        <TextView
+            <TextView
                 android:id="@+id/locationText"
                 style="@style/ProfileField"
                 android:layout_below="@id/favoriteFruitLayout"
-                android:text="@string/location"/>
+                android:text="@string/location" />
 
-        <TextView
+            <TextView
                 android:id="@+id/registeredText"
                 style="@style/ProfileField"
                 android:layout_below="@id/locationText"
-                android:text="@string/registered"/>
+                android:text="@string/registered" />
 
 
-        <TextView
+            <TextView
                 android:id="@+id/aboutText"
                 style="@style/ProfileField"
                 android:layout_below="@id/registeredText"
-                android:text="@string/about"/>
+                android:text="@string/about" />
 
-        <TextView
+            <TextView
                 android:id="@+id/friendsText"
                 style="@style/HeaderProfileField"
                 android:layout_below="@id/aboutText"
-                android:text="@string/friends"/>
+                android:text="@string/friends" />
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_below="@id/friendsText"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/usersRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:layout_marginTop="8dp"
+                android:layout_below="@id/friendsText"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="10dp"
-                android:scrollbars="vertical"/>
-    </RelativeLayout>
-</ScrollView>
+                android:scrollbars="vertical" />
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>

@@ -20,19 +20,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     private OnUserClickListener onUserClickListener;
     private Context context;
 
+
     public UsersAdapter(OnUserClickListener onClickListener, Context context) {
         this.onUserClickListener = onClickListener;
         this.context = context;
-    }
-
-    public void setItems(Collection<User> users) {
-        userList.addAll(users);
-        notifyDataSetChanged();
-    }
-
-    public void clearItems() {
-        userList.clear();
-        notifyDataSetChanged();
     }
 
 
@@ -43,14 +34,28 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         return new UsersViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(UsersViewHolder holder, int position) {
         holder.bind(userList.get(position));
     }
 
+
     @Override
     public int getItemCount() {
         return userList.size();
+    }
+
+
+    public void setItems(Collection<User> users) {
+        userList.addAll(users);
+        notifyDataSetChanged();
+    }
+
+
+    public void clearItems() {
+        userList.clear();
+        notifyDataSetChanged();
     }
 
     public class UsersViewHolder extends RecyclerView.ViewHolder {
@@ -77,7 +82,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         public void bind(User user) {
             name.setText(user.getName());
             email.setText(user.getEmail());
-            if (user.getState()) {
+            if (user.getActive()) {
                 state.setText("active");
                 state.setTextColor(context.getResources().getColor(R.color.activeUser));
             }
@@ -87,6 +92,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             }
         }
     }
+
 
     public interface OnUserClickListener {
         void onUserClick(User user);

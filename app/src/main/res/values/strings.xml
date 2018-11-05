@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Contacts List</string>
+
     <string name="name">Name: %s</string>
     <string name="email">E-mail: %s</string>
-    <string name="state">state</string>
+    <string name="active">active</string>
     <string name="YO">%d y.o.</string>
     <string name="phone">Phone: %s</string>
     <string name="company">Company: %s</string>
@@ -13,5 +14,6 @@
     <string name="about">About: %s</string>
     <string name="friends">Friends :</string>
 
+    <string name="reload_cache">reload_cache</string>
 
 </resources>
