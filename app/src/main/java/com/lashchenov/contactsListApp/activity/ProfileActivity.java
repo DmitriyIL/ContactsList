@@ -87,9 +87,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = null;
         switch (v.getId()) {
             case R.id.emailClickable:
-                intent = new Intent(android.content.Intent.ACTION_SEND);
-                intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", user.getEmail(), null));
                 break;
             case R.id.phoneClickable:
                 intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + user.getPhone()));
