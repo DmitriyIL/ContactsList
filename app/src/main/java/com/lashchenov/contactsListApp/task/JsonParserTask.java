@@ -51,6 +51,7 @@ public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
         usersAdapter = activity.getUsersAdapter();
         progressBarView = new WeakReference<>(activity.findViewById(R.id.progressBar));
     }
+    
 
     @Override
     protected void onPreExecute() {
@@ -159,7 +160,7 @@ public class JsonParserTask extends AsyncTask<Void, Void, List<User>> {
             }
         });
         progressBarView.get().setVisibility(View.INVISIBLE);
-        Toast.makeText(context.get(), "Done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.get(), "Users loaded", Toast.LENGTH_SHORT).show();
         usersAdapter.setItems(users);
         data.setUsers(users);
     }

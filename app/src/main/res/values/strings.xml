@@ -12,7 +12,7 @@
     <string name="location">Location:&#160;</string>
     <string name="registered">Registered at %s</string>
     <string name="about">About: %s</string>
-    <string name="friends">Friends :</string>
+    <string name="friends">Friends:</string>
 
     <string name="reload_cache">reload_cache</string>
 
