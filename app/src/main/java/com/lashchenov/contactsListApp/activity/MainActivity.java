@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     private Data data;
+    private JsonParserTask jsonParserTask;
 
 
     @Override
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         data = new DataSQLiteImpl(this);
+        jsonParserTask = new JsonParserTask(this);
 
         initToolbar();
         initRecyclerView();
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.round_cache) {
-            loadUsersFromJson();
+            jsonParserTask.execute();
             return true;
         }
         return false;
@@ -99,18 +101,12 @@ public class MainActivity extends AppCompatActivity {
     private void fillRecyclerView() {
         List<User> userList;
         if (data.isEmpty()) {
-            loadUsersFromJson();
+            jsonParserTask.execute();
         } else {
             //get data from cache
             userList = data.getUsers();
             usersAdapter.setItems(userList);
         }
-    }
-
-
-    private void loadUsersFromJson() {
-        JsonParserTask jsonParserTask = new JsonParserTask(this);
-        jsonParserTask.execute();
     }
 
 
