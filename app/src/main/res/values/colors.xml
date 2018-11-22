@@ -8,11 +8,11 @@
     <color name="gray_dove_light">#969595</color>
 
     <color name="brownEye">#a35501</color>
-    <color name="blueEye">#02ddf4</color>
+    <color name="blueEye">#78cdfa</color>
     <color name="greenEye">#3ece25</color>
 
     <color name="activeUser">#1fb91b</color>
-    <color name="inactiveUser">#b7b7b7</color>
+    <color name="inactiveUser">#a9a9a9</color>
 
     <color name="separatorBar">#d7d7d7</color>
 

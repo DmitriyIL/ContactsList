@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/profile_toolbar"
+        android:id="@+id/profileToolbar"
         style="@style/Toolbar">
     </android.support.v7.widget.Toolbar>
 
@@ -139,7 +139,7 @@
                 android:text="@string/friends" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/usersRecyclerView"
+                android:id="@+id/profileRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_below="@id/friendsText"

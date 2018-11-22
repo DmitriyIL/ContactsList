@@ -30,27 +30,31 @@ import com.lashchenov.contactsListApp.pojo.User;
 
 import java.util.Collection;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String USER_ID = "userId";
 
-    private ScrollView scrollView;
-    private Toolbar toolbar;
+    @BindView(R.id.profileScrollView) ScrollView scrollView;
+    @BindView(R.id.profileToolbar) Toolbar toolbar;
+
+    @BindView(R.id.nameText) TextView nameTextView;
+    @BindView(R.id.yoText) TextView ageTextView;
+    @BindView(R.id.companyText) TextView companyTextView;
+    @BindView(R.id.registeredText) TextView registeredTextView;
+    @BindView(R.id.aboutText) TextView aboutTextView;
+    @BindView(R.id.eyeColorImage) ImageView eyeColorImageView;
+    @BindView(R.id.favoriteFruitImage) ImageView favoriteFruitImageView;
+
+    @BindView(R.id.emailClickable) TextView clickableEmail;
+    @BindView(R.id.phoneClickable) TextView clickablePhone;
+    @BindView(R.id.locationClickable) TextView clickableLocation;
+
+    @BindView(R.id.profileRecyclerView) RecyclerView friendsView;
+
     private UsersAdapter friendsAdapter;
-
-    private TextView nameTextView;
-    private TextView ageTextView;
-    private TextView companyTextView;
-    private TextView registeredTextView;
-    private TextView aboutTextView;
-    private ImageView eyeColorImageView;
-    private ImageView favoriteFruitImageView;
-    private RecyclerView friendsView;
-
-    private TextView clickableEmail;
-    private TextView clickablePhone;
-    private TextView clickableLocation;
-
     private User user;
 
 
@@ -58,6 +62,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ButterKnife.bind(this);
 
         initToolbar();
         initViewComponents();
@@ -105,28 +111,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initToolbar() {
-        toolbar = findViewById(R.id.profile_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
     private void initViewComponents() {
-        scrollView = findViewById(R.id.profileScrollView);
         scrollView.smoothScrollTo(0, 0);
-
-        nameTextView = findViewById(R.id.nameText);
-        ageTextView = findViewById(R.id.yoText);
-        companyTextView = findViewById(R.id.companyText);
-        registeredTextView = findViewById(R.id.registeredText);
-        aboutTextView = findViewById(R.id.aboutText);
-        eyeColorImageView = findViewById(R.id.eyeColorImage);
-        favoriteFruitImageView = findViewById(R.id.favoriteFruitImage);
-
-        clickableEmail = findViewById(R.id.emailClickable);
-        clickablePhone = findViewById(R.id.phoneClickable);
-        clickableLocation = findViewById(R.id.locationClickable);
-
         initRecyclerView();
     }
 
@@ -134,7 +125,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void initRecyclerView() {
         final Context context = getBaseContext();
 
-        friendsView = findViewById(R.id.usersRecyclerView);
         friendsView.setLayoutManager(new LinearLayoutManager(context));
 
         DividerItemDecoration itemDecor =
@@ -168,6 +158,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void displayProfileInfo(User user) {
         nameTextView.setText(user.getName());
+
         ageTextView.setText(String.format(getString(R.string.YO), user.getAge()));
         companyTextView.setText(String.format(getString(R.string.company), user.getCompany()));
         registeredTextView.setText(String.format(

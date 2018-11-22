@@ -15,14 +15,12 @@ import java.util.List;
 
 public class DataSQLiteImpl implements Data {
 
-    private Context context;
     private UsersDBHelper usersDBHelper;
 
     private HashMap<Integer, User> usersCache = new HashMap<>();
 
 
     public DataSQLiteImpl(Context context) {
-        this.context = context;
         usersDBHelper = UsersDBHelper.getInstance(context);
     }
 

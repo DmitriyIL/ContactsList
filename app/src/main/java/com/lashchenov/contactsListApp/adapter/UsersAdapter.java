@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
     private List<User> userList = new ArrayList<>();
@@ -60,15 +63,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
     public class UsersViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView name;
-        private TextView email;
-        private TextView state;
+        @BindView(R.id.nameTextView) TextView name;
+        @BindView(R.id.emailTextView) TextView email;
+        @BindView(R.id.stateTextView) TextView state;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.nameTextView);
-            email = itemView.findViewById(R.id.emailTextView);
-            state = itemView.findViewById(R.id.stateTextView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
