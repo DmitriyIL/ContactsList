@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 import com.lashchenov.contactsListApp.R;
 import com.lashchenov.contactsListApp.adapter.UsersAdapter;
-import com.lashchenov.contactsListApp.data.Data;
-import com.lashchenov.contactsListApp.data.DataSQLiteImpl;
 import com.lashchenov.contactsListApp.model.MainModel;
 import com.lashchenov.contactsListApp.pojo.User;
 
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.progressBar) ProgressBar progressBarView;
 
     private UsersAdapter usersAdapter;
-    private Data data;
 
 //check push
     @Override
@@ -45,19 +42,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        data = new DataSQLiteImpl(this);
-
         ButterKnife.bind(this);
 
         mainModel = ViewModelProviders.of(this).get(MainModel.class);
-        mainModel.getDataLive().observe(this, data -> {
-            turnOffWaiting(data);
+        mainModel.getUsers().observe(this, newUsers -> {
+            turnOffWaiting(newUsers);
+
+            Toast.makeText(this, "Users loaded", Toast.LENGTH_SHORT).show();
         });
 
 
         initToolbar();
         initRecyclerView();
         fillRecyclerView();
+        if (mainModel.isWaiting()) {
+            turnOnWaiting();
+        }
     }
 
 
@@ -112,29 +112,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void fillRecyclerView() {
+        turnOnWaiting();
         List<User> userList;
-        if (data.isEmpty()) {
-            turnOnWaiting();
+        if (mainModel.getData().isEmpty()) {
             mainModel.loadUsers();
+            return;
         } else {
             //get data from cache
-            userList = data.getUsers();
+            userList = mainModel.getData().getUsers();
             usersAdapter.setItems(userList);
         }
+        turnOffWaiting(userList);
     }
 
 
     private void turnOnWaiting() {
+        mainModel.setWaiting(true);
         usersAdapter.clearItems();
         progressBarView.setVisibility(View.VISIBLE);
     }
 
 
     private void turnOffWaiting(List<User> newUsers) {
-        data.setUsers(newUsers);
+        mainModel.setWaiting(false);
         usersAdapter.setItems(newUsers);
         progressBarView.setVisibility(View.INVISIBLE);
-        Toast.makeText(this, "Users loaded", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -7,12 +7,16 @@ import java.util.Objects;
 public class User implements Serializable {
 
     private int id;
-    private String name, email, company, phone;
+    private String name;
+    private String email;
+    private String company;
+    private String phone;
     private Boolean active;
     private int age;
     private EyeColor eyeColor;
     private FavoriteFruit favoriteFruit;
-    private Double latitude, longitude;
+    private Double latitude;
+    private Double longitude;
     private String about;
     private List<User> friends;
     private String registered;

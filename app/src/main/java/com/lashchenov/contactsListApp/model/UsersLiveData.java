@@ -1,6 +1,6 @@
 package com.lashchenov.contactsListApp.model;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import com.lashchenov.contactsListApp.UsersJsonParser;
@@ -9,17 +9,17 @@ import com.lashchenov.contactsListApp.pojo.User;
 import java.util.Collections;
 import java.util.List;
 
-public class MainLiveData extends LiveData<List<User>> {
-    private static MainLiveData sInstance;
+public class UsersLiveData extends MutableLiveData<List<User>> {
+    private static UsersLiveData sInstance;
 
-    public static MainLiveData getInstance() {
+    public static UsersLiveData getInstance() {
         if (sInstance == null) {
-            sInstance = new MainLiveData();
+            sInstance = new UsersLiveData();
         }
         return sInstance;
     }
 
-    private MainLiveData() {
+    private UsersLiveData() {
         loadDataFromJson();
     }
 
