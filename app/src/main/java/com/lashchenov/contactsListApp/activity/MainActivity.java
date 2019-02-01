@@ -3,6 +3,7 @@ package com.lashchenov.contactsListApp.activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -30,13 +31,16 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     private MainModel mainModel;
 
-    @BindView(R.id.profileRecyclerView) RecyclerView usersView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.progressBar) ProgressBar progressBarView;
+    @BindView(R.id.profileRecyclerView)
+    RecyclerView usersView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBarView;
 
     private UsersAdapter usersAdapter;
 
-//check push
+    //check push
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +49,21 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mainModel = ViewModelProviders.of(this).get(MainModel.class);
-        mainModel.getUsers().observe(this, newUsers -> {
-            turnOffWaiting(newUsers);
-
-            Toast.makeText(this, "Users loaded", Toast.LENGTH_SHORT).show();
+        mainModel.getUsersLiveData().observe(this, newUserList -> {
+            if (!mainModel.isWaiting()) return;
+            if (newUserList == null) {
+                showLoadingError();
+            } else {
+                Toast.makeText(this, "Users loaded", Toast.LENGTH_SHORT).show();
+            }
+            turnOffWaiting(newUserList);
         });
-
 
         initToolbar();
         initRecyclerView();
-        fillRecyclerView();
-        if (mainModel.isWaiting()) {
-            turnOnWaiting();
+
+        if (!mainModel.isWaiting()) {
+            fillRecyclerView();
         }
     }
 
@@ -113,16 +120,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillRecyclerView() {
         turnOnWaiting();
-        List<User> userList;
         if (mainModel.getData().isEmpty()) {
             mainModel.loadUsers();
-            return;
         } else {
             //get data from cache
-            userList = mainModel.getData().getUsers();
-            usersAdapter.setItems(userList);
+            List<User> userList = mainModel.getData().getUsers();
+            turnOffWaiting(userList);
         }
-        turnOffWaiting(userList);
     }
 
 
@@ -135,8 +139,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void turnOffWaiting(List<User> newUsers) {
         mainModel.setWaiting(false);
+        if (newUsers == null) {
+            newUsers = mainModel.getData().getUsers();
+        }
         usersAdapter.setItems(newUsers);
         progressBarView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showLoadingError() {
+        Toast.makeText(this, "Error while loading", Toast.LENGTH_SHORT).show();
     }
 
 

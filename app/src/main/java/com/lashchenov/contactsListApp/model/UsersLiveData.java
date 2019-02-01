@@ -8,6 +8,7 @@ import com.lashchenov.contactsListApp.pojo.User;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class UsersLiveData extends MutableLiveData<List<User>> {
     private static UsersLiveData sInstance;
@@ -20,11 +21,19 @@ public class UsersLiveData extends MutableLiveData<List<User>> {
     }
 
     private UsersLiveData() {
-        loadDataFromJson();
+        /*Callable<List<User>> task = () -> new UsersJsonParser().parseUsers();
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<List<User>> future = executor.submit(task);
+
+        Observable<List<User>> ob = Observable.fromFuture(future)
+                .subscribeOn(AndroidSchedulers.mainThread());*/
+
+        loadUsersFromJson();
     }
 
 
-    public void loadDataFromJson() {
+    public void loadUsersFromJson() {
         new JsonParserTask().execute();
     }
 
@@ -41,11 +50,12 @@ public class UsersLiveData extends MutableLiveData<List<User>> {
             return usersJsonParser.parseUsers();
         }
 
-
         @Override
         protected void onPostExecute(List<User> users) {
             super.onPostExecute(users);
-            Collections.sort(users, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
+            if (users != null) {
+                Collections.sort(users, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
+            }
             setValue(users);
         }
     }

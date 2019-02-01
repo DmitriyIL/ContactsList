@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.lashchenov.contactsListApp.pojo.EyeColor;
 import com.lashchenov.contactsListApp.pojo.FavoriteFruit;
@@ -20,7 +22,6 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class UsersJsonParser {
         } catch (java.net.MalformedURLException e) {
             e.printStackTrace();
         }
-        if (url == null) return Collections.emptyList();
+        if (url == null) return null;
 
         String strJson = readJsonFromUrl(url);
         return parseJsonToUsersList(strJson);
@@ -46,24 +47,28 @@ public class UsersJsonParser {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
             String ls = System.getProperty("line.separator");
-            String tempStr = "";
+            String tempStr;
             while ((tempStr = in.readLine()) != null) {
                 sb.append(tempStr).append(ls);
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
         return sb.toString();
     }
 
 
-
-
     private List<User> parseJsonToUsersList(String strJson) {
+        if (strJson.equals("")) return null;
         Gson g = new GsonBuilder().registerTypeAdapter(User.class, new UsersJsonParser.UserDeserializer()).create();
-        Type itemsListType = new TypeToken<List<User>>() {
-        }.getType();
-        List<User> users = g.fromJson(strJson, itemsListType);
+        Type itemsListType = new TypeToken<List<User>>() {}.getType();
+        List<User> users;
+        try {
+            users = g.fromJson(strJson, itemsListType);
+        } catch (JsonIOException | JsonSyntaxException ex) {
+            return null;
+        }
         return users;
     }
 

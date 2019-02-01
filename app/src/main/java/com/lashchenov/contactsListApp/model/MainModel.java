@@ -19,12 +19,13 @@ public class MainModel extends AndroidViewModel {
 
     public MainModel(Application application) {
         super(application);
+        isWaiting = false;
         usersLiveData = UsersLiveData.getInstance();
         data = new DataSQLiteImpl(getApplication());
     }
 
     public void loadUsers() {
-        usersLiveData.loadDataFromJson();
+        usersLiveData.loadUsersFromJson();
         new DataSavingAsyncTask().execute();
     }
 
@@ -40,7 +41,7 @@ public class MainModel extends AndroidViewModel {
         return data;
     }
 
-    public LiveData<List<User>> getUsers() {
+    public LiveData<List<User>> getUsersLiveData() {
         return usersLiveData;
     }
 
